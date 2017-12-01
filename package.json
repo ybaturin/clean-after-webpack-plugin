@@ -1,0 +1,38 @@
+{
+  "name": "clean-after-webpack-plugin",
+  "version": "1.0.0",
+  "description": "Webpack plugin for delete files from old build",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "precommit": "npm run build && git add ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ybaturin/clean-after-webpack-plugin.git"
+  },
+  "keywords": [
+    "webpack",
+    "clean",
+    "build"
+  ],
+  "author": "ybaturin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ybaturin/clean-after-webpack-plugin/issues"
+  },
+  "homepage": "https://github.com/ybaturin/clean-after-webpack-plugin#readme",
+  "devDependencies": {
+    "@types/lodash": "^4.14.86",
+    "@types/webpack": "^3.8.1",
+    "@types/chalk": "^2.2.0",
+    "@types/mz": "0.0.32",
+    "husky": "^0.14.3",
+    "lodash": "^4.17.4",
+    "typescript": "^2.6.2"
+  },
+  "dependencies": {
+    "chalk": "2.3.0",
+    "mz": "2.7.0"
+  }
+}

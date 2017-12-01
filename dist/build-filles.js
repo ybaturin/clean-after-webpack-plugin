@@ -38,7 +38,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var fs = require("mz/fs");
 var path = require("path");
 var _ = require("lodash");
-var glob = require("glob");
 var BuildFilles = /** @class */ (function () {
     function BuildFilles(outputPath, exceptFiles) {
         this.outputPath = outputPath;
@@ -50,8 +49,9 @@ var BuildFilles = /** @class */ (function () {
             var allFiles, filesForRemove;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        allFiles = glob.sync(path.resolve(this.outputPath, '**/*'));
+                    case 0: return [4 /*yield*/, this.getFilesList(this.outputPath)];
+                    case 1:
+                        allFiles = _a.sent();
                         filesForRemove = _
                             .chain(allFiles)
                             .difference(createdFiles)
@@ -61,7 +61,7 @@ var BuildFilles = /** @class */ (function () {
                         })
                             .value();
                         return [4 /*yield*/, this.deleteFiles(filesForRemove)];
-                    case 1:
+                    case 2:
                         _a.sent();
                         return [2 /*return*/, filesForRemove];
                 }
@@ -90,6 +90,42 @@ var BuildFilles = /** @class */ (function () {
                         _i++;
                         return [3 /*break*/, 1];
                     case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    BuildFilles.prototype.getFilesList = function (dir) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, files, _a, _b, _i, i, name_1, children;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        result = [];
+                        return [4 /*yield*/, fs.readdir(dir)];
+                    case 1:
+                        files = _c.sent();
+                        _a = [];
+                        for (_b in files)
+                            _a.push(_b);
+                        _i = 0;
+                        _c.label = 2;
+                    case 2:
+                        if (!(_i < _a.length)) return [3 /*break*/, 6];
+                        i = _a[_i];
+                        name_1 = dir + '/' + files[i];
+                        if (!fs.statSync(name_1).isDirectory()) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.getFilesList(name_1)];
+                    case 3:
+                        children = _c.sent();
+                        result.push.apply(result, children);
+                        return [3 /*break*/, 5];
+                    case 4:
+                        result.push(name_1);
+                        _c.label = 5;
+                    case 5:
+                        _i++;
+                        return [3 /*break*/, 2];
+                    case 6: return [2 /*return*/, result];
                 }
             });
         });

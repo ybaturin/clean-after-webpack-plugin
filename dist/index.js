@@ -55,6 +55,17 @@ var ClearAfterWebpackPlugin = /** @class */ (function () {
         }
         this.outputPath = compiler.options.output.path;
         this.buildFiles = new build_filles_1.BuildFilles(this.outputPath, this.options.exceptFiles);
+        compiler.plugin('before-compile', function (compilation, doneCallback) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.buildFiles.saveOld()];
+                    case 1:
+                        _a.sent();
+                        doneCallback();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
         compiler.plugin('done', function (compilation) { return __awaiter(_this, void 0, void 0, function () {
             var _this = this;
             var createdFiles, removedFiles;
@@ -62,7 +73,7 @@ var ClearAfterWebpackPlugin = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         createdFiles = compilation.toJson().assets.map(function (asset) { return path.join(_this.outputPath, asset.name); });
-                        return [4 /*yield*/, this.buildFiles.removeOld(createdFiles)];
+                        return [4 /*yield*/, this.buildFiles.compareAndRemoveOld(createdFiles)];
                     case 1:
                         removedFiles = _a.sent();
                         this.reportDeletedFiles(removedFiles);

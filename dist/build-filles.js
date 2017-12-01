@@ -43,17 +43,30 @@ var BuildFilles = /** @class */ (function () {
         this.outputPath = outputPath;
         this.exceptFiles = exceptFiles;
     }
-    BuildFilles.prototype.removeOld = function (createdFiles) {
+    BuildFilles.prototype.saveOld = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this;
+                        return [4 /*yield*/, this.getFilesList(this.outputPath)];
+                    case 1:
+                        _a.oldFiles = _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    BuildFilles.prototype.compareAndRemoveOld = function (createdFiles) {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
-            var allFiles, filesForRemove;
+            var filesForRemove;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getFilesList(this.outputPath)];
-                    case 1:
-                        allFiles = _a.sent();
+                    case 0:
                         filesForRemove = _
-                            .chain(allFiles)
+                            .chain(this.oldFiles)
                             .difference(createdFiles)
                             .filter(function (filepath) {
                             var basename = path.basename(filepath);
@@ -61,7 +74,7 @@ var BuildFilles = /** @class */ (function () {
                         })
                             .value();
                         return [4 /*yield*/, this.deleteFiles(filesForRemove)];
-                    case 2:
+                    case 1:
                         _a.sent();
                         return [2 /*return*/, filesForRemove];
                 }

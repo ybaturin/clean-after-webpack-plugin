@@ -29,10 +29,13 @@ class ClearAfterWebpackPlugin {
 
     this.outputPath = compiler.options.output.path;
     this.buildFiles = new BuildFilles(this.outputPath, this.options.exceptFiles);
-
+    compiler.plugin('before-compile', async (compilation, doneCallback) => {
+      await this.buildFiles.saveOld();
+      doneCallback();
+    });
     compiler.plugin('done', async (compilation) => {
       const createdFiles = compilation.toJson().assets.map(asset => path.join(this.outputPath, asset.name));
-      const removedFiles = await this.buildFiles.removeOld(createdFiles);
+      const removedFiles = await this.buildFiles.compareAndRemoveOld(createdFiles);
       this.reportDeletedFiles(removedFiles);
     });
   }

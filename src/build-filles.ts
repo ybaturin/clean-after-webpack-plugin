@@ -3,15 +3,19 @@ import * as path from 'path';
 import * as _ from 'lodash';
 
 export class BuildFilles {
+  private oldFiles: string[];
   constructor(
     private outputPath: string,
     private exceptFiles: string[],
   ) {}
 
-  async removeOld(createdFiles): Promise<string[]> {
-    const allFiles = await this.getFilesList(this.outputPath);
+  async saveOld(): Promise<void> {
+    this.oldFiles = await this.getFilesList(this.outputPath);
+  }
+
+  async compareAndRemoveOld(createdFiles): Promise<string[]> {
     const filesForRemove = _
-      .chain(allFiles)
+      .chain(this.oldFiles)
       .difference(createdFiles)
       .filter((filepath) => {
         const basename = path.basename(filepath);

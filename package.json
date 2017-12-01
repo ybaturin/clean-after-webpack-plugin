@@ -1,6 +1,6 @@
 {
   "name": "clean-after-webpack-plugin",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Webpack plugin for delete files from old build",
   "main": "dist/index.js",
   "scripts": {
